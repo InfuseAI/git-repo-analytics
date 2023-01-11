@@ -1,0 +1,4 @@
+GitPython
+dbt-core
+dbt-duckdb
+duckdb==0.6.1

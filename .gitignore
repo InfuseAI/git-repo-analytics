@@ -1,0 +1,12 @@
+
+target/
+dbt_packages/
+logs/
+.user.yml
+
+.venv
+venv
+
+*.duckdb
+*.duckdb.wal
+repos/

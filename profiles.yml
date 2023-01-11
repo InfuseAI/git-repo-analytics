@@ -1,0 +1,6 @@
+dbt_core_analytics:
+  outputs:
+    dev:
+      type: duckdb
+      path: dbt_core.duckdb
+  target: dev

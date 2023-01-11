@@ -1,0 +1,19 @@
+
+version: 2
+
+sources:
+  - name: dbt_core
+    schema: main
+    tables:
+      - name: commits
+
+models:
+  - name: authors
+    description: "git commit authors"
+    columns:
+      - name: email
+        tests:
+          - not_null
+      - name: name
+        tests:
+          - not_null
