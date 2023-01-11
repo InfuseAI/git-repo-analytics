@@ -34,3 +34,11 @@ jobs:
         run: |
           ls -al
 
+      - name: Run dbt
+        run: |
+          dbt run
+          dbt test
+
+      - name: Run PipeRider
+        run: |
+          piperider run
