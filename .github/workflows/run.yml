@@ -1,0 +1,36 @@
+name: Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Set up DBT + PipeRider
+        run: |
+          pip install -r requirements.txt
+          pip install 'piperider[duckdb]'
+
+      - name: Clone dbt-core repo
+        run: |
+          mkdir -p repos
+          git clone https://github.com/dbt-labs/dbt-core.git repos/dbt-core
+
+      - name: Fetch dbt-core repo commits
+        run: |
+          python3 fetch_repo.py
+
+      - name: List dir
+        run: |
+          ls -al
+
