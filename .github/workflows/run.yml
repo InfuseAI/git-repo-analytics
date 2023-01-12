@@ -35,7 +35,9 @@ jobs:
         run: |
           url=${{ vars.GIT_REPO_URL }}
           input=${{ github.event.inputs.git_repo_url }}
-          [[ ! -z $input ]] && { url=$input }
+          if [[ ! -z $input ]]; then
+            url=$input
+          fi
 
           git clone $url git_repo
 
