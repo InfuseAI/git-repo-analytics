@@ -4,11 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      git_repo_url:
-        description: 'Git repo url to analyze'
-        required: false
 
 jobs:
   run:
@@ -28,11 +23,7 @@ jobs:
 
       - name: Clone git repo
         run: |
-          url="${{ vars.GIT_REPO_URL }}"
-          input="${{ github.event.inputs.git_repo_url }}"
-          if [[ ! -z "$input" ]]; then
-            url="$input"
-          fi
+          url=${{ vars.GIT_REPO_URL }}
           git clone $url git_repo
 
       - name: Read git repo commits
