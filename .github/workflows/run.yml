@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
@@ -30,22 +32,29 @@ jobs:
         run: |
           python3 read_git_repo.py
 
-      - name: Run dbt
+      - name: Run dbt + PipeRider for main branch
         run: |
           dbt run
-          dbt test
-
-      - name: Run PipeRider
-        run: |
           piperider run
+
+      - name: Run dbt + PipeRider for current pull request
+        run: |
+          git fetch
+          git checkout $GITHUB_HEAD_REF
+          dbt run
+          piperider run
+
+      - name: Compare reports
+        run: |
+          piperider compare-reports --last
 
       - name: Save reports
         run: |
-          report_path=$(readlink -f .piperider/outputs/latest)
           mkdir -p artifact
-          cp -r $report_path artifact
+          cp -r .piperider/outputs artifact/outputs
+          cp -r .piperider/comparisons artifact/comparisons
 
       - uses: actions/upload-artifact@v3
         with:
-          name: report
+          name: reports
           path: artifact/
