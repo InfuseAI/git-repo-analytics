@@ -19,18 +19,6 @@ jobs:
           echo "git url: ${{ vars.GIT_REPO_URL }}"
           echo "input url: ${{ github.event.inputs.git_repo_url }}"
 
-          url=${{ vars.GIT_REPO_URL }}
-          input=${{ github.event.inputs.git_repo_url }}
-
-          if [[ -z "$input" ]]; then
-            echo "No input"
-          else
-            echo "$input"
-            url="$input"
-          fi
-          echo "url:"
-          echo $url
-
       - uses: actions/checkout@v3
 
       - name: Set up Python 3.8
@@ -47,10 +35,9 @@ jobs:
         run: |
           url=${{ vars.GIT_REPO_URL }}
           input=${{ github.event.inputs.git_repo_url }}
-          if [[ ! -z $input ]]; then
-            url=$input
+          if [[ ! -z "$input" ]]; then
+            url="$input"
           fi
-
           git clone $url git_repo
 
       - name: Read git repo commits
