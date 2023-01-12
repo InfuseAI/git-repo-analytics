@@ -3,7 +3,7 @@
 with source_data as (
 
     select *
-    from {{ source('dbt_core', 'commits') }}
+    from {{ source('git_repo', 'commits') }}
 
 )
 

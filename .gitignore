@@ -6,7 +6,8 @@ logs/
 
 .venv
 venv
+.mypy_cache/
 
 *.duckdb
 *.duckdb.wal
-repos/
+git_repo/

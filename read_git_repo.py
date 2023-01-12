@@ -30,11 +30,10 @@ def log(repo):
 
 if __name__ == '__main__':
     path = os.getcwd()
-    repo = 'dbt-core'
-    commits = log(f'{path}/repos/{repo}')
+    commits = log(f'{path}/git_repo')
     if not path.endswith("/"):
         path = path + "/"
-    fname = f'{path}dbt_core.duckdb'
+    fname = f'{path}git_repo.duckdb'
     if os.path.isfile(fname):
         os.remove(fname)
 
