@@ -14,11 +14,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo vars
-        run: |
-          echo "git url: ${{ vars.GIT_REPO_URL }}"
-          echo "input url: ${{ github.event.inputs.git_repo_url }}"
-
       - uses: actions/checkout@v3
 
       - name: Set up Python 3.8
@@ -43,10 +38,6 @@ jobs:
       - name: Read git repo commits
         run: |
           python3 read_git_repo.py
-
-      - name: List dir
-        run: |
-          ls -al
 
       - name: Run dbt
         run: |
