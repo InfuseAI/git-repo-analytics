@@ -17,7 +17,7 @@ jobs:
       - name: Echo vars
         run: |
           echo "git url: ${{ vars.GIT_REPO_URL }}"
-          echo "input: ${{ github.event.inputs.git_repo_url }}"
+          echo "input url: ${{ github.event.inputs.git_repo_url }}"
 
       - uses: actions/checkout@v3
 
@@ -33,7 +33,14 @@ jobs:
 
       - name: Clone git repo
         run: |
-          git clone ${{ vars.GIT_REPO_URL }} git_repo
+          local url=''
+          if [[ -n ${{ github.event.inputs.git_repo_url }} ]]
+          then
+            url=${{ github.event.inputs.git_repo_url }}
+          else
+            url=${{ vars.GIT_REPO_URL }}
+          fi
+          git clone $url git_repo
 
       - name: Read git repo commits
         run: |
