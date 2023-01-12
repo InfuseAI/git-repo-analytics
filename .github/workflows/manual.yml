@@ -1,0 +1,53 @@
+name: Run dbt + RipeRider
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_repo_url:
+        description: 'Git repo url to analyze'
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Set up dbt + PipeRider
+        run: |
+          pip install -r requirements.txt
+          pip install 'piperider[duckdb]'
+
+      - name: Clone git repo
+        run: |
+          url=${{ github.event.inputs.git_repo_url }}
+          git clone $url git_repo
+
+      - name: Read git repo commits
+        run: |
+          python3 read_git_repo.py
+
+      - name: Run dbt
+        run: |
+          dbt run
+          dbt test
+
+      - name: Run PipeRider
+        run: |
+          piperider run
+
+      - name: Save reports
+        run: |
+          report_path=$(readlink -f .piperider/outputs/latest)
+          mkdir -p artifact
+          cp -r $report_path artifact
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: artifact/
