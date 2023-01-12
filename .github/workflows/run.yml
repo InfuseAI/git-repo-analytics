@@ -4,11 +4,22 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      git_repo_url:
+        description: 'Git repo url to analyze'
+        default: ${{ vars.GIT_REPO_URL }}
+        required: false
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - name: Echo vars
+        run: |
+          echo "git url: ${{ vars.GIT_REPO_URL }}"
+          echo "input: ${{ github.event.inputs.git_repo_url }}"
+
       - uses: actions/checkout@v3
 
       - name: Set up Python 3.8
