@@ -51,6 +51,8 @@ jobs:
       - name: Save reports
         run: |
           mkdir -p artifact
+          rm .piperider/outputs/latest
+          rm .piperider/comparisons/latest
           cp -r .piperider/outputs artifact/outputs
           cp -r .piperider/comparisons artifact/comparisons
 
