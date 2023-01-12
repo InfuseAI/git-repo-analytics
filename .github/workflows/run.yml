@@ -21,7 +21,7 @@ jobs:
           pip install -r requirements.txt
           pip install 'piperider[duckdb]'
 
-      - name: Clone git repo
+      - name: Clone git repo ${{ vars.GIT_REPO_URL }}
         run: |
           url=${{ vars.GIT_REPO_URL }}
           git clone $url git_repo
