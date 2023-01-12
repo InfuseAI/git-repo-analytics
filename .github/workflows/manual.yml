@@ -1,4 +1,4 @@
-name: Run dbt + RipeRider
+name: Run dbt + RipeRider manually
 
 on:
   workflow_dispatch:
