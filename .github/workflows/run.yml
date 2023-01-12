@@ -33,8 +33,8 @@ jobs:
 
       - name: Clone git repo
         run: |
-          url=${{ vars.GIT_REPO_URL }}
-          input=${{ github.event.inputs.git_repo_url }}
+          url="${{ vars.GIT_REPO_URL }}"
+          input="${{ github.event.inputs.git_repo_url }}"
           if [[ ! -z "$input" ]]; then
             url="$input"
           fi
