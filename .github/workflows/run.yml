@@ -8,7 +8,6 @@ on:
     inputs:
       git_repo_url:
         description: 'Git repo url to analyze'
-        default: "${{ vars.GIT_REPO_URL }}"
         required: false
 
 jobs:
