@@ -34,10 +34,9 @@ jobs:
       - name: Clone git repo
         run: |
           url=${{ vars.GIT_REPO_URL }}
-          if [[ -n ${{ github.event.inputs.git_repo_url }} ]]
-          then
-            url=${{ github.event.inputs.git_repo_url }}
-          fi
+          input=${{ github.event.inputs.git_repo_url }}
+          [[ ! -z $input ]] && { url=$input }
+
           git clone $url git_repo
 
       - name: Read git repo commits
