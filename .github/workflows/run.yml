@@ -1,22 +1,14 @@
-name: Run
+name: Run dbt + RipeRider
 
 on:
   pull_request:
     branches:
       - main
 
-env:
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
-
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo vars
-        run: |
-          echo "repo var : ${{ vars.REPOSITORY_VAR }}"
-          echo "var from shell env : $env_var"
-          echo "url? : ${{ vars.GIT_REPO_URL }}"
       - uses: actions/checkout@v3
 
       - name: Set up Python 3.8
@@ -29,14 +21,13 @@ jobs:
           pip install -r requirements.txt
           pip install 'piperider[duckdb]'
 
-      - name: Clone dbt-core repo
+      - name: Clone git repo
         run: |
-          mkdir -p repos
-          git clone https://github.com/dbt-labs/dbt-core.git repos/dbt-core
+          git clone ${{ vars.GIT_REPO_URL }} git_repo
 
-      - name: Fetch dbt-core repo commits
+      - name: Read git repo commits
         run: |
-          python3 fetch_repo.py
+          python3 read_git_repo.py
 
       - name: List dir
         run: |
