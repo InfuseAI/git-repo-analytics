@@ -1,8 +1,8 @@
 dataSources:
-- name: dbt_core_analytics
+- name: git_repo_analytics
   type: duckdb
   dbt:
-    profile: dbt_core_analytics
+    profile: git_repo_analytics
     target: dev
     projectDir: .
 

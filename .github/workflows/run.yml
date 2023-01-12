@@ -1,14 +1,22 @@
 name: Run
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+
+env:
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - name: Echo vars
+        run: |
+          echo "repo var : ${{ vars.REPOSITORY_VAR }}"
+          echo "var from shell env : $env_var"
+          echo "url? : ${{ vars.GIT_REPO_URL }}"
       - uses: actions/checkout@v3
 
       - name: Set up Python 3.8

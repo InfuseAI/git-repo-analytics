@@ -1,6 +1,6 @@
-dbt_core_analytics:
+git_repo_analytics:
   outputs:
     dev:
       type: duckdb
-      path: dbt_core.duckdb
+      path: git_repo.duckdb
   target: dev

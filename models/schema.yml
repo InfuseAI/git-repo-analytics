@@ -2,7 +2,7 @@
 version: 2
 
 sources:
-  - name: dbt_core
+  - name: git_repo
     schema: main
     tables:
       - name: commits
