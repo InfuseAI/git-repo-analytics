@@ -33,12 +33,10 @@ jobs:
 
       - name: Clone git repo
         run: |
-          local url=''
+          url=${{ vars.GIT_REPO_URL }}
           if [[ -n ${{ github.event.inputs.git_repo_url }} ]]
           then
             url=${{ github.event.inputs.git_repo_url }}
-          else
-            url=${{ vars.GIT_REPO_URL }}
           fi
           git clone $url git_repo
 
