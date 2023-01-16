@@ -11,7 +11,9 @@ jobs:
     steps:
       - name: Echo
         run: |
-          echo "repo: ${{ toJSON(github.event.repository) }}"
+          echo "repo: ${{ github.event.repository.name }}"
+          owner=$(echo "${{ github.event.repository.full_name }}" | cut -d'/' -f1)
+          echo "owner: $owner"
 
       - uses: actions/checkout@v3
         with:
@@ -70,7 +72,7 @@ jobs:
           git checkout gh-pages || { \
             echo "gh-pages not found. create an empty gh-pages branch"; \
             git checkout --orphan gh-pages; \
-            git restore --staged . ; }
+            git status; }
 
           git config --local user.name 'github-actions'
           git add comparisons
