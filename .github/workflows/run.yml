@@ -9,6 +9,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - name: Echo
+        run: |
+          echo "repo: ${{ github.event.repository }}"
+
       - uses: actions/checkout@v3
         with:
           ref: main
@@ -63,8 +67,10 @@ jobs:
           mkdir -p comparisons/${{ github.run_id }}
           cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
 
-          git checkout gh-pages || \
-            { echo "gh-pages not found. create an empty gh-pages branch"; git checkout --orphan gh-pages; }
+          git checkout gh-pages || { \
+            echo "gh-pages not found. create an empty gh-pages branch"; \
+            git checkout --orphan gh-pages; \
+            git restore --staged . ; }
 
           git config --local user.name 'github-actions'
           git add comparisons
