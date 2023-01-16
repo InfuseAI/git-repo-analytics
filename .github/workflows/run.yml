@@ -44,23 +44,19 @@ jobs:
           dbt run
           piperider run
 
-      - name: Compare reports
+      - name: Generate Comparison reports + Summary
         run: |
           piperider compare-reports --last
-
-      - name: Save reports
-        run: |
+          pushd .piperider/comparisons/latest
+          zip -r comparison-report.zip ./
+          popd
           cp .piperider/comparisons/latest/summary.md .
-          mkdir -p artifact
-          rm .piperider/outputs/latest
-          rm .piperider/comparisons/latest
-          cp -r .piperider/outputs artifact/outputs
-          cp -r .piperider/comparisons artifact/comparisons
+          cp .piperider/comparisons/latest/comparison-report.zip .
 
       - uses: actions/upload-artifact@v3
         with:
-          name: reports
-          path: artifact/
+          name: comparison-report-artifact
+          path: comparison-report.zip
 
       - name: Create PR Comment
         uses: peter-evans/create-or-update-comment@v2.1.0
