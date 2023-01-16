@@ -79,11 +79,9 @@ jobs:
           echo "# :bar_chart: Piperider Comparison Summary" > summary.md
           cat comparison-report-summary.md >> summary.md
           echo -e "\n" >> summary.md
-          echo "## :paperclip: Generated Comparison Report ZIP" >> summary.md
-          echo "Find it in the [Github Action Runs Page](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> summary.md
-          echo -e "\n" >> summary.md
-          echo "## :page_facing_up: See Comparison Report" >> summary.md
-          echo "https://${owner}.github.io/${{ github.event.repository.name }}/comparisons/${{ github.run_id }}/" >> summary.md
+          echo "## :paperclip: Generated Comparison Report" >> summary.md
+          echo "Find the zip file in the [Github Action Runs Page](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> summary.md
+          echo "See the report: https://${owner}.github.io/${{ github.event.repository.name }}/comparisons/${{ github.run_id }}/" >> summary.md
 
       - name: Create PR Comment
         uses: peter-evans/create-or-update-comment@v2.1.0
