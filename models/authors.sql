@@ -1,14 +1,14 @@
 {{ config(materialized='table') }}
 
-with source_data as (
+with commits as (
 
-    select *
-    from {{ source('git_repo', 'commits') }}
+    select * from {{ ref('stg_commits') }}
 
 )
 
 select distinct
     author as name,
-    email as email
-from source_data
+    email as email,
+    substr(email, instr(email, '@') + 1) as domain
+from commits
 
