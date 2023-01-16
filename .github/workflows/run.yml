@@ -51,12 +51,29 @@ jobs:
           zip -r comparison-report.zip ./
           popd
           cp .piperider/comparisons/latest/summary.md comparison-report-summary.md
-          cp .piperider/comparisons/latest/comparison-report.zip .
+          mv .piperider/comparisons/latest/comparison-report.zip .
 
       - uses: actions/upload-artifact@v3
         with:
           name: comparison-report-artifact
           path: comparison-report.zip
+
+      - name: Deploy to GitHub pages
+        run: |
+          mkdir -p comparisons/${{ github.run_id }}
+          cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
+
+          git checkout gh-pages
+          if [[ $? != 0 ]]; then
+            echo "gh-pages not found. create an empty gh-pages branch"
+            git checkout --orphan gh-pages
+          fi
+
+          git config --local user.name 'github-actions'
+          git add comparisons
+          git commit -m "deploy to gh-pages"
+          git push origin gh-pages -f
+          echo "Deploy gh-pages completed"
 
       - name: Prepare Comparison Summary
         run: |
