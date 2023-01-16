@@ -66,7 +66,9 @@ jobs:
           git checkout gh-pages || { \
             echo "gh-pages not found. create an empty gh-pages branch"; \
             git checkout --orphan gh-pages; \
-            git rm -r --cached .; }
+            git status; \
+            git rm -r --cached .; \
+            git status; }
 
           git config --local user.name 'github-actions'
           git add comparisons
