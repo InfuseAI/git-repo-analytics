@@ -44,7 +44,7 @@ jobs:
           dbt run
           piperider run --dbt-state target/
 
-      - name: Generate Comparison reports + Summary
+      - name: Generate Comparison reports
         run: |
           piperider compare-reports --last
           pushd .piperider/comparisons/latest
@@ -60,7 +60,6 @@ jobs:
 
       - name: Add comparison reports
         run: |
-          git checkout gh-pages || true
           mkdir -p comparisons/${{ github.run_id }}
           cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
 
@@ -68,8 +67,9 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: comparisons
+          publish_dir: ./comparisons
           publish_branch: gh-pages
+          keep_files: true
           enable_jekyll: false
 
       - name: Prepare Comparison Summary
