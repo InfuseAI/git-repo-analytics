@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Echo
         run: |
-          echo "repo: ${{ github.event.repository }}"
+          echo "repo: ${{ toJSON(github.event.repository) }}"
 
       - uses: actions/checkout@v3
         with:
