@@ -1,21 +1,22 @@
+from datetime import datetime, timezone
 import git
 import re
-import os
 import os.path
 import duckdb
 
 
 def log(repo):
     repo = git.Repo(repo)
-    log = repo.git.log().split("\ncommit ")
+    log = repo.git.log(date='iso8601-strict').split("\ncommit ")
     commits = []
     for line in log:
         match = re.search(r"([^\n]+)\nAuthor:\s+([^\n]+)\nDate:\s+([^\n]+)\n\n\s+(.*)\n", line, re.DOTALL)
         if match:
             author = re.match(r"(.+)\s+<([^>]+)>", match.group(2))
+            date = datetime.fromisoformat(match.group(3))
             commit = {
                 "hash": match.group(1),
-                "date": match.group(3),
+                "date": date.astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
                 "message": match.group(4)
             }
             if author:
