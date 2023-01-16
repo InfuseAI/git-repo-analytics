@@ -35,14 +35,14 @@ jobs:
       - name: Run dbt + PipeRider for main branch
         run: |
           dbt run
-          piperider run
+          piperider run --dbt-state target/
 
       - name: Run dbt + PipeRider for current pull request
         run: |
           git fetch
           git checkout $GITHUB_HEAD_REF
           dbt run
-          piperider run
+          piperider run --dbt-state target/
 
       - name: Generate Comparison reports + Summary
         run: |
