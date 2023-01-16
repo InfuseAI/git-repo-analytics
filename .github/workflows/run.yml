@@ -58,7 +58,7 @@ jobs:
           name: comparison-report-artifact
           path: comparison-report.zip
 
-      - name: Deploy to GitHub pages
+      - name: Commit to GitHub pages
         run: |
           mkdir -p comparisons/${{ github.run_id }}
           cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
@@ -75,6 +75,12 @@ jobs:
           git commit -m "deploy to gh-pages"
           git push origin gh-pages -f
           echo "Deploy gh-pages completed"
+
+      - name: Deploy to GitHub pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
 
       - name: Prepare Comparison Summary
         run: |
