@@ -9,12 +9,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo
-        run: |
-          echo "repo: ${{ github.event.repository.name }}"
-          owner=$(echo "${{ github.event.repository.full_name }}" | cut -d'/' -f1)
-          echo "owner: $owner"
-
       - uses: actions/checkout@v3
         with:
           ref: main
@@ -72,7 +66,7 @@ jobs:
           git checkout gh-pages || { \
             echo "gh-pages not found. create an empty gh-pages branch"; \
             git checkout --orphan gh-pages; \
-            git status; }
+            git rm -r --cached .; }
 
           git config --local user.name 'github-actions'
           git add comparisons
@@ -82,11 +76,16 @@ jobs:
 
       - name: Prepare Comparison Summary
         run: |
+          owner=$(echo "${{ github.event.repository.full_name }}" | cut -d'/' -f1)
+
           echo "# :bar_chart: Piperider Comparison Summary" > summary.md
           cat comparison-report-summary.md >> summary.md
           echo -e "\n" >> summary.md
           echo "## :paperclip: Generated Comparison Report ZIP" >> summary.md
           echo "Find it in the [Github Action Runs Page](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> summary.md
+          echo -e "\n" >> summary.md
+          echo "## :page_facing_up: See Comparison Report" >> summary.md
+          echo "https://${owner}.github.io/${{ github.event.repository.name }}/comparisons/${{ github.run_id }}/" >> summary.md
 
       - name: Create PR Comment
         uses: peter-evans/create-or-update-comment@v2.1.0
