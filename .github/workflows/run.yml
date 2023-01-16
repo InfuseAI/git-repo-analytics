@@ -50,6 +50,7 @@ jobs:
 
       - name: Save reports
         run: |
+          cp .piperider/comparisons/latest/summary.md .
           mkdir -p artifact
           rm .piperider/outputs/latest
           rm .piperider/comparisons/latest
@@ -60,3 +61,9 @@ jobs:
         with:
           name: reports
           path: artifact/
+
+      - name: Create PR Comment
+        uses: peter-evans/create-or-update-comment@v2.1.0
+        with:
+          issue-number: ${{ github.event.number }}
+          body-file: summary.md
