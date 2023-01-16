@@ -1,0 +1,24 @@
+
+version: 2
+
+metrics:
+
+  - name: total_commits
+    label: Total commits
+    model: ref('stg_commits')
+
+    calculation_method: count_distinct
+    expression: hash
+
+    timestamp: datetime
+    time_grains: [day, week, month, quarter, year, all_time]
+
+  - name: active_authors
+    label: Active authors
+    model: ref('stg_commits')
+
+    calculation_method: count_distinct
+    expression: author
+
+    timestamp: datetime
+    time_grains: [day, week, month]

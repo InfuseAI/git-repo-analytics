@@ -34,6 +34,7 @@ jobs:
 
       - name: Run dbt + PipeRider for main branch
         run: |
+          dbt deps
           dbt run
           piperider run --dbt-state target/
 
@@ -41,6 +42,7 @@ jobs:
         run: |
           git fetch
           git checkout $GITHUB_HEAD_REF
+          dbt deps
           dbt run
           piperider run --dbt-state target/
 
