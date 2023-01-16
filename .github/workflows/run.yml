@@ -58,29 +58,19 @@ jobs:
           name: comparison-report-artifact
           path: comparison-report.zip
 
-      - name: Commit to GitHub pages
+      - name: Add comparison reports
         run: |
+          git checkout gh-pages || true
           mkdir -p comparisons/${{ github.run_id }}
           cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
-
-          git checkout gh-pages || { \
-            echo "gh-pages not found. create an empty gh-pages branch"; \
-            git checkout --orphan gh-pages; \
-            git status; \
-            git rm -r --cached .; \
-            git status; }
-
-          git config --local user.name 'github-actions'
-          git add comparisons
-          git commit -m "deploy to gh-pages"
-          git push origin gh-pages -f
-          echo "Deploy gh-pages completed"
 
       - name: Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: comparisons
           publish_branch: gh-pages
+          enable_jekyll: false
 
       - name: Prepare Comparison Summary
         run: |
