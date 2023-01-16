@@ -60,14 +60,14 @@ jobs:
 
       - name: Add comparison reports
         run: |
-          mkdir -p comparisons/${{ github.run_id }}
-          cp -r .piperider/comparisons/latest/* comparisons/${{ github.run_id }}/
+          mkdir -p public/comparisons/${{ github.run_id }}
+          cp -r .piperider/comparisons/latest/* public/comparisons/${{ github.run_id }}/
 
       - name: Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./comparisons
+          publish_dir: ./public
           publish_branch: gh-pages
           keep_files: true
           enable_jekyll: false
