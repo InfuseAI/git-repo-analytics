@@ -8,22 +8,24 @@ import duckdb
 def log(repo):
     repo = git.Repo(repo)
     log = repo.git.log(date='iso8601-strict').split("\ncommit ")
+    # remove 'commit ' in first line
+    log[0] = log[0][7:]
     commits = []
     for line in log:
-        match = re.search(r"([^\n]+)\nAuthor:\s+([^\n]+)\nDate:\s+([^\n]+)\n\n\s+(.*)\n", line, re.DOTALL)
+        match = re.search(r"([^\n]+)\n(Merge:\s+([^\n]+)\n)?Author:\s+([^\n]+)\nDate:\s+([^\n]+)\n\n\s+(.*)\n", line, re.DOTALL)
         if match:
-            author = re.match(r"(.+)\s+<([^>]+)>", match.group(2))
-            date = datetime.fromisoformat(match.group(3))
+            author = re.match(r"(.+)\s+<([^>]+)>", match.group(4))
+            date = datetime.fromisoformat(match.group(5))
             commit = {
                 "hash": match.group(1),
                 "date": date.astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
-                "message": match.group(4)
+                "message": match.group(6)
             }
             if author:
                 commit["author"] = author.group(1)
                 commit["email"] = author.group(2)
             else:
-                commit["author"] = match.group(2)
+                commit["author"] = match.group(4)
                 commit["email"] = None
             commits.append(commit)
     return commits
