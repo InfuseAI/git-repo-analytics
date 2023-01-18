@@ -21,7 +21,7 @@ jobs:
       - name: Set up dbt + PipeRider
         run: |
           pip install -r requirements.txt
-          pip install 'piperider[duckdb]'
+          pip install 'piperider-nightly[duckdb]'
 
       - name: Clone git repo ${{ vars.GIT_REPO_URL }}
         run: |

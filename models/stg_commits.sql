@@ -15,7 +15,7 @@ renamed as (
         author,
         email,
         message,
-        date as datetime
+        date::datetime as datetime
     from source
 
 )
