@@ -13,6 +13,11 @@ metrics:
     timestamp: datetime
     time_grains: [day, week, month, quarter, year, all_time]
 
+    #filters:
+    #  - field: author
+    #    operator: '!='
+    #    value: "'github-actions[bot]'"
+
     tags:
     - piperider
 
