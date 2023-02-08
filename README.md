@@ -4,8 +4,13 @@ This is a demo project for [PipeRider](https://github.com/InfuseAI/piperider). I
 
 # Usage
 
-1. Clone a git repo
+1. Clone this repo
     ```
+    git clone git@github.com:InfuseAI/git-repo-analytics.git   
+    ```
+1. Clone the git repo for analysis
+    ```
+    cd git-repo-analytics
     git clone git@github.com:dbt-labs/dbt-core.git git_repo
     ```
 1. Install python package
@@ -22,12 +27,15 @@ This is a demo project for [PipeRider](https://github.com/InfuseAI/piperider). I
 
 1. Run dbt
     ```
+    dbt deps
     dbt build
     ```    
 1. Run piperider
     ```
     piperider run --dbt-state ./target
     ```
+1. Open the report from the command output
+
 # Screenshots
 
 ![](assets/screenshot1.png)
