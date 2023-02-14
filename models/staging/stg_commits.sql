@@ -17,7 +17,8 @@ renamed as (
         email,
         message,
         date as datetime,
-        raw_date
+        raw_date,
+        concat('UTC', substr(raw_date, 20)) as utc_offset
     from source
 
 )
