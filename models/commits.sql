@@ -11,6 +11,7 @@ select distinct
     author,
     email,
     message,
-    datetime
+    datetime,
+    concat('UTC', substr(raw_date, 20)) as utc_offset
 from logs
 
