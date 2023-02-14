@@ -7,8 +7,10 @@ with logs as (
 )
 
 select distinct
-    author as name,
-    email as email,
-    substr(email, instr(email, '@') + 1) as domain
+    hash,
+    author,
+    email,
+    message,
+    datetime
 from logs
 

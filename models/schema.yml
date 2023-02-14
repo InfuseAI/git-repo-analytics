@@ -5,7 +5,7 @@ sources:
   - name: git_repo
     schema: main
     tables:
-      - name: commits
+      - name: logs
 
 models:
   - name: authors

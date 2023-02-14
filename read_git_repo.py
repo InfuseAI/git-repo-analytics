@@ -19,6 +19,7 @@ def log(repo):
             commit = {
                 "hash": match.group(1),
                 "date": date.astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
+                "raw_date": match.group(5),
                 "message": match.group(6)
             }
             if author:
@@ -41,10 +42,10 @@ if __name__ == '__main__':
         os.remove(fname)
 
     con = duckdb.connect(database=fname)
-    con.execute("CREATE TABLE commits (hash VARCHAR(40), author VARCHAR(256), email VARCHAR(256), " +
-                "message text, date VARCHAR(35))")
+    con.execute("CREATE TABLE logs (hash VARCHAR(40), author VARCHAR(256), email VARCHAR(256), " +
+                "message text, date VARCHAR(35), raw_date VARCHAR(35))")
 
     def commit(c):
-        return (c["hash"], c["author"], c["email"], c["message"], c["date"])
-    con.executemany("INSERT INTO commits VALUES(?, ?, ?, ?, ?)", map(commit, commits))
+        return (c["hash"], c["author"], c["email"], c["message"], c["date"], c["raw_date"])
+    con.executemany("INSERT INTO logs VALUES(?, ?, ?, ?, ?, ?)", map(commit, commits))
     con.close()

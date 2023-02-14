@@ -1,10 +1,10 @@
-{{ config(materialized='table') }}
+{{ config(materialized='view') }}
 
 with
 
 source as (
 
-    select * from {{ source('git_repo', 'commits') }}
+    select * from {{ source('git_repo', 'logs') }}
 
 ),
 
@@ -15,7 +15,8 @@ renamed as (
         author,
         email,
         message,
-        date::datetime as datetime
+        date as datetime,
+        raw_date
     from source
 
 )
