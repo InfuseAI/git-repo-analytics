@@ -1,0 +1,72 @@
+name: generate-sample-reports
+
+on:
+  schedule:
+    - cron: '0 20 * * 0,1,2,3,4' # run at 4 AM (UTC + 8) every working day
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  GIT_REPO_URL: ${{ vars.GIT_REPO_URL }}
+
+jobs:
+  generate-sample-reports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: set up python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: install dbt and piperider
+        run: |
+          pip install -r requirements.txt
+          pip install 'piperider-nightly[duckdb]'
+
+      - name: prepare db for git repo ${{ vars.GIT_REPO_URL }}
+        run: |
+          git clone $GIT_REPO_URL git_repo
+          python3 read_git_repo.py
+
+      - name: override piperider user id
+        run: |
+          piperider version && rm .piperider/.unsend_events.json
+          sed -i "s/^anonymous_tracking: .*$/anonymous_tracking: false/" ~/.piperider/profile.yml
+
+      - name: single report run - base
+        run: |
+          dbt deps
+          dbt build
+          piperider run --dbt-state target/ -o /tmp/piperider-base
+
+      - name: checkout pr branch
+        run: |
+          git fetch
+          git checkout feature/update-models
+
+      - name: single report run - target
+        run: |
+          dbt deps
+          dbt build
+          piperider run --dbt-state target/ -o /tmp/piperider-target
+
+      - name: compare reports
+        run: |
+          piperider compare-reports \
+            --base /tmp/piperider-base/run.json \
+            --target /tmp/piperider-target/run.json \
+            -o /tmp/piperider-comparison
+
+      - name: upload reports to S3
+        run: |
+          aws s3 cp --recursive --acl public-read /tmp/piperider-base s3://$S3_BUCKET/single-run-report
+          aws s3 cp --recursive --acl public-read /tmp/piperider-comparison s3://$S3_BUCKET/comparison-report
