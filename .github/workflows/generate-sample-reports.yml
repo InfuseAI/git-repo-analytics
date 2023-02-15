@@ -30,7 +30,7 @@ jobs:
       - name: install dbt and piperider
         run: |
           pip install -r requirements.txt
-          pip install 'piperider[duckdb]'
+          pip install 'piperider-nightly[duckdb]'
 
       - name: prepare db for git repo ${{ vars.GIT_REPO_URL }}
         run: |
