@@ -49,7 +49,8 @@ jobs:
       - name: override piperider user id
         run: |
           piperider version && rm .piperider/.unsend_events.json
-          sed -i "s/^anonymous_tracking: .*$/anonymous_tracking: false/" ~/.piperider/profile.yml
+          uuid=$(uuidgen -n @oid -N "${GITHUB_REPOSITORY}" --sha1 | tr -d "-")
+          sed -i "s/^user_id: .*$/user_id: ${uuid}/" ~/.piperider/profile.yml
 
       - name: single report run - base
         run: |
