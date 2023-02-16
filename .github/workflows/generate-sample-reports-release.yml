@@ -1,4 +1,4 @@
-name: generate-sample-reports
+name: generate-sample-reports-release
 
 on:
   repository_dispatch:
