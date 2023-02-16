@@ -1,0 +1,96 @@
+name: generate-sample-reports-release
+
+on:
+  repository_dispatch:
+    types: [generate-sample-report]
+  workflow_dispatch:
+    inputs:
+      piperider_version:
+        description: 'The version of PipeRider'
+        required: true
+        type: string
+        default: 'latest'
+
+env:
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  GIT_REPO_URL: ${{ vars.GIT_REPO_URL }}
+
+jobs:
+  generate-sample-reports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: set up python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: install dbt and piperider
+        id: piperider_install
+        run: |
+          pip install -r requirements.txt
+          if [ "${PIPERIDER_VERSION}" != "latest" ]; then
+            pip install -U piperider==${PIPERIDER_VERSION}
+          fi
+          echo "::set-output name=version::$(piperider version | head -1)"
+        env:
+          PIPERIDER_VERSION: ${{ github.event.client_payload.piperider_version  || github.event.inputs.piperider_version}}
+
+      - name: prepare db for git repo ${{ vars.GIT_REPO_URL }}
+        run: |
+          git clone $GIT_REPO_URL git_repo
+          python3 read_git_repo.py
+
+      - name: override piperider user id
+        run: |
+          piperider version && rm .piperider/.unsend_events.json
+          uuid=$(uuidgen -n @oid -N "${GITHUB_REPOSITORY}" --sha1 | tr -d "-")
+          sed -i "s/^user_id: .*$/user_id: ${uuid}/" ~/.piperider/profile.yml
+
+      - name: single report run - base
+        run: |
+          dbt deps
+          dbt build
+          piperider run --dbt-state target/ -o /tmp/piperider-base
+
+      - name: checkout pr branch
+        run: |
+          git fetch
+          git checkout feature/update-models
+
+      - name: single report run - target
+        run: |
+          dbt deps
+          dbt build
+          piperider run --dbt-state target/ -o /tmp/piperider-target
+
+      - name: compare reports
+        run: |
+          piperider compare-reports \
+            --base /tmp/piperider-base/run.json \
+            --target /tmp/piperider-target/run.json \
+            -o /tmp/piperider-comparison
+
+      - name: upload reports to S3
+        id: upload_reports
+        run: |
+          aws s3 cp --recursive --acl public-read /tmp/piperider-base s3://$S3_BUCKET/run-$(piperider version | head -1)
+          aws s3 cp --recursive --acl public-read /tmp/piperider-comparison s3://$S3_BUCKET/comparison-$(piperider version | head -1)
+          echo "::set-output name=single_run::https://piperider-github-readme.s3.ap-northeast-1.amazonaws.com/run-$(piperider version | head -1)/index.html"
+          echo "::set-output name=comparison::https://piperider-github-readme.s3.ap-northeast-1.amazonaws.com/comparison-$(piperider version | head -1)/index.html"
+
+      - name: Notify release to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload: |
+            {
+              "text": ":chai_dog::chai_dog::chai_dog:*PipeRider Sample Reports*:chai_dog::chai_dog::chai_dog:\n*Version*: ${{ steps.piperider_install.outputs.version }}\n<${{ steps.upload_reports.outputs.single_run }}|Single Run Report>\n<${{ steps.upload_reports.outputs.comparison }}|Comparison Report>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
