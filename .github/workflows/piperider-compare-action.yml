@@ -31,6 +31,13 @@ jobs:
         run: |
           python3 read_git_repo.py
 
+      - name: Debug
+        run: |
+          cwd
+          ls -la
+          ls -la .piperider
+          ls -la .piperider/compare
+
       - name: PipeRider Compare Action - Upload and Share to PipeRider Cloud Staging
         uses: InfuseAI/piperider-compare-action@v1.0.0-beta.1
         env:
