@@ -1,0 +1,43 @@
+name: PipeRider Compare Action
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Set up dbt + PipeRider
+        run: |
+          pip install -r requirements.txt
+
+      - name: Clone git repo ${{ vars.GIT_REPO_URL }}
+        run: |
+          url=${{ vars.GIT_REPO_URL }}
+          git clone $url git_repo
+
+      - name: Read git repo commits
+        run: |
+          python3 read_git_repo.py
+
+      - name: PipeRider Compare Action - Upload and Share to PipeRider Cloud Staging
+        uses: InfuseAI/piperider-compare-action@v1.0.0-beta.1
+        env:
+          PIPERIDER_API_SERVICE: https://staging.cloud.piperider.io
+        with:
+          cloud_project: ${{ vars.PIPERIDER_CLOUD_PROJECT }}
+          cloud_token: ${{ secrets.PIPERIDER_CLOUD_TOKEN }}
+          upload: true
+          share: true
+          recipe: default
