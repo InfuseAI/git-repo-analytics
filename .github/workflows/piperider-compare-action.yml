@@ -33,7 +33,7 @@ jobs:
 
       - name: Debug
         run: |
-          cwd
+          pwd
           ls -la
           ls -la .piperider
           ls -la .piperider/compare
