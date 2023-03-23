@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  run:
+  piperider-compare-action:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
           PIPERIDER_API_SERVICE: https://staging.cloud.piperider.io
         with:
           cloud_project: ${{ vars.PIPERIDER_CLOUD_PROJECT }}
-          cloud_token: ${{ secrets.PIPERIDER_CLOUD_TOKEN }}
+          cloud_api_token: ${{ secrets.PIPERIDER_CLOUD_TOKEN }}
           upload: true
           share: true
           recipe: default
