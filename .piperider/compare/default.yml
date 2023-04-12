@@ -2,6 +2,7 @@ base:
   branch: main
   dbt:
     commands:
+    - python read_git_repo.py
     - dbt deps
     - dbt build
   piperider:
@@ -9,6 +10,7 @@ base:
 target:
   dbt:
     commands:
+    - python read_git_repo.py
     - dbt deps
     - dbt build
   piperider:

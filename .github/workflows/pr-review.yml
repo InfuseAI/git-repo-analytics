@@ -1,0 +1,32 @@
+name: PR review by dbt + RipeRider
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pr-review:
+    name: PR review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Clone the git repo to analyze
+        run: |
+          url=${{ env.GIT_REPO_URL }}
+          git clone $url git_repo
+        env:
+          GIT_REPO_URL: https://github.com/kubernetes/kubernetes.git # You can change this to any other repo
+
+      - name: PipeRider Compare
+        uses: InfuseAI/piperider-compare-action@v1
