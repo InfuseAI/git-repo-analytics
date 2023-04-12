@@ -39,7 +39,7 @@ jobs:
           ls -la .piperider/compare
 
       - name: PipeRider Compare Action - Upload and Share to PipeRider Cloud Staging
-        uses: InfuseAI/piperider-compare-action@v1.0.0-beta.1
+        uses: InfuseAI/piperider-compare-action@v1
         env:
           PIPERIDER_API_SERVICE: https://staging.cloud.piperider.io
         with:
