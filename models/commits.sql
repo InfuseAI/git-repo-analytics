@@ -6,7 +6,8 @@ with logs as (
 
 )
 
-select distinct
+select
+    repo_url,
     hash,
     author,
     email,

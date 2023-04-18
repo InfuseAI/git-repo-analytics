@@ -11,6 +11,7 @@ source as (
 renamed as (
 
     select
+        repo_url,
         hash,
         author,
         email,

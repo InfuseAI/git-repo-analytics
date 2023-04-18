@@ -3,11 +3,17 @@ target/
 dbt_packages/
 logs/
 .user.yml
+.envrc*
 
 .venv
 venv
 .mypy_cache/
+__pycache__/
+.idea/
+.DS_Store
 
 *.duckdb
 *.duckdb.wal
-git_repo/
+
+scrape/
+outputs/
