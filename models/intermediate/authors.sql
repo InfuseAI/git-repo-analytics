@@ -2,7 +2,7 @@
 
 with logs as (
 
-    select * from {{ ref('stg_logs') }}
+    select * from {{ ref('stg_commits') }}
 
 )
 

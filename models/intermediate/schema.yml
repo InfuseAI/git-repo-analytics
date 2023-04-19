@@ -1,12 +1,6 @@
 
 version: 2
 
-sources:
-  - name: git_repo
-    schema: main
-    tables:
-      - name: logs
-
 models:
   - name: authors
     description: "git commit authors"

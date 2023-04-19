@@ -12,9 +12,9 @@ load:
 	@python -m git_repo_analytics.load
 
 transform:
-	@echo "dbt build"
+	dbt build
 
 piperider:
-	@echo "piperider run"
+	piperider run
 
 

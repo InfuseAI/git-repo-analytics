@@ -4,14 +4,14 @@ with
 
 source as (
 
-    select * from {{ source('git_repo', 'logs') }}
+    select * from {{ source('git_repo', 'raw_commits') }}
 
 ),
 
 renamed as (
 
     select
-        repo_url,
+        repo,
         hash,
         author,
         email,

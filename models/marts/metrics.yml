@@ -5,7 +5,7 @@ metrics:
 
   - name: total_commits
     label: Total commits
-    model: ref('stg_logs')
+    model: ref('stg_commits')
 
     calculation_method: count_distinct
     expression: hash
@@ -18,7 +18,7 @@ metrics:
 
   - name: active_authors
     label: Active authors
-    model: ref('stg_logs')
+    model: ref('stg_commits')
 
     calculation_method: count_distinct
     expression: author
