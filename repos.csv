@@ -1,0 +1,8 @@
+name,repo
+Dolly,nomic-ai/gpt4all
+bloomz.cpp,NouamaneTazi/bloomz.cpp
+alpaca.cpp,antimatter15/alpaca.cpp
+Stanford Alpaca,tatsu-lab/stanford_alpaca
+llama.cpp,ggerganov/llama.cpp
+ChatRWKV,BlinkDL/ChatRWKV
+RWKV-LM,BlinkDL/RWKV-LM
