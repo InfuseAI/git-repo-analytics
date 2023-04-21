@@ -1,13 +1,9 @@
-
 version: 2
 
 models:
   - name: authors
     description: "git commit authors"
     columns:
-      - name: email
-        tests:
-          - not_null
       - name: name
         tests:
           - not_null
