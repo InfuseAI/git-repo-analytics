@@ -1,7 +1,7 @@
-GitPython
 PyGithub
 dbt-core>=1.4,<1.5
 dbt-duckdb
 duckdb
 piperider[duckdb]
+GitPython
 pandas

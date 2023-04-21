@@ -30,12 +30,16 @@ jobs:
       - name: install dbt and piperider
         run: |
           pip install -r requirements.txt
-          pip install 'piperider[duckdb]'
 
-      - name: prepare db for git repo ${{ vars.GIT_REPO_URL }}
+      - name: Clone git repo and fetch stats from github API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git clone $GIT_REPO_URL git_repo
-          python3 read_git_repo.py
+          make fetch
+
+      - name: Load to duckdb
+        run: |
+          make load
 
       - name: override piperider user id
         run: |

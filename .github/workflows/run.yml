@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: main
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
@@ -21,16 +19,20 @@ jobs:
       - name: Set up dbt + PipeRider
         run: |
           pip install -r requirements.txt
-          pip install 'piperider-nightly[duckdb]'
 
-      - name: Clone git repo ${{ vars.GIT_REPO_URL }}
+      - name: Clone git repo and fetch stats from github API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          url=${{ vars.GIT_REPO_URL }}
-          git clone $url git_repo
+          make fetch
 
-      - name: Read git repo commits
+      - name: Load to duckdb
         run: |
-          python3 read_git_repo.py
+          make load
+
+      - uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Run dbt + PipeRider for main branch
         run: |
