@@ -1,4 +1,4 @@
-all: fetch load transform piperider
+all: fetch load transform report piperider
 
 fetch_gh:
 	@python -m git_repo_analytics.fetch_github_api
@@ -14,7 +14,12 @@ load:
 transform:
 	dbt build
 
+report:
+	@python -m git_repo_analytics.gen_report	
+
 piperider:
-	piperider run
+	rm -rf data/piperider
+	piperider run -o data/piperider --open
+
 
 

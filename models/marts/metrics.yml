@@ -1,4 +1,3 @@
-
 version: 2
 
 metrics:
@@ -11,10 +10,11 @@ metrics:
     expression: hash
 
     timestamp: datetime
-    time_grains: [day, week, month, quarter, year, all_time]
+    time_grains: [ day, week, month, quarter, year, all_time ]
+    dimensions: [ repo ]
 
     tags:
-    - piperider
+      - piperider
 
   - name: active_authors
     label: Active authors
@@ -24,7 +24,8 @@ metrics:
     expression: author
 
     timestamp: datetime
-    time_grains: [day, week, month]
+    time_grains: [ day, week, month ]
+    dimensions: [ repo ]
 
     tags:
-    - piperider
+      - piperider
