@@ -12,20 +12,21 @@ fetch: clone_repos fetch_gh
 
 load:
 	@python -m git_repo_analytics.load
-	@echo	
+	@echo
 
 transform:
+	@dbt deps
 	@dbt build
-	@echo		
+	@echo
 
 report:
 	@python -m git_repo_analytics.gen_report	
-	@echo	
+	@echo
 
 piperider:
 	@rm -rf data/piperider
 	@piperider run -o data/piperider --open
-	@echo	
+	@echo
 
 
 clean:

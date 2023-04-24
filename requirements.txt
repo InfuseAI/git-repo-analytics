@@ -5,3 +5,4 @@ duckdb
 piperider[duckdb]
 GitPython
 pandas
+matplotlib
