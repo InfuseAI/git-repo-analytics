@@ -2,20 +2,20 @@
 
 with 
 R as (
-    select * from {{ source('git_repo', 'raw_repos') }}
+    select * from {{ ref('stg_repos') }}
 ),
 C as (
     select
         count(*) as contributers,
         repo,
-    from {{ source('git_repo', 'raw_contributers') }}
+    from {{ ref('stg_contributers') }}
     group by repo
 ),
 S as (
     select
         count(*) as commits,
         repo,
-    from {{ ref('commits') }}
+    from {{ ref('stg_commits') }}
     group by repo
 )
 select R.*, C.contributers, S.commits
