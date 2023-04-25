@@ -1,19 +1,9 @@
-
 version: 2
-
-sources:
-  - name: git_repo
-    schema: main
-    tables:
-      - name: logs
 
 models:
   - name: authors
     description: "git commit authors"
     columns:
-      - name: email
-        tests:
-          - not_null
       - name: name
         tests:
           - not_null

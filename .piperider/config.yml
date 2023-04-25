@@ -1,31 +1,13 @@
-dataSources:
-- name: git_repo_analytics
-  type: duckdb
-  dbt:
-    profile: git_repo_analytics
-    target: dev
-    projectDir: .
+dataSources: []
+dbt:
+  projectDir: .
+  tag: 'piperider'
 
 profiler:
-  table:
+#   table:
 #     # the maximum row count to profile. (Default unlimited)
 #     limit: 1000000
-    duplicateRows: true
-
-# The tables to include/exclude
-# includes: []
-# excludes: []
-# Include views or not
-# include_views: true
-
-# tables:
-#   my-table-name:
-#     # description of the table
-#     description: "this is a table description"
-#     columns:
-#       my-col-name:
-#         # description of the column
-#         description: "this is a column description"
+#     duplicateRows: false
 
 telemetry:
   id: f3373c578173414fb4af8574d1a9725f

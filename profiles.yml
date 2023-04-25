@@ -2,5 +2,5 @@ git_repo_analytics:
   outputs:
     dev:
       type: duckdb
-      path: git_repo.duckdb
+      path: data/git_repo.duckdb
   target: dev

@@ -1,0 +1,10 @@
+
+version: 2
+
+sources:
+  - name: git_repo
+    schema: main
+    tables:
+      - name: raw_commits
+      - name: raw_repos
+      - name: raw_contributers
