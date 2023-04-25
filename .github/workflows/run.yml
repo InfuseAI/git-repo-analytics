@@ -30,12 +30,10 @@ jobs:
         run: |
           make load
 
-      - uses: actions/checkout@v3
-        with:
-          ref: main
-
       - name: Run dbt + PipeRider for main branch
         run: |
+          git fetch
+          git checkout main
           dbt deps
           dbt run
           piperider run --dbt-state target/
