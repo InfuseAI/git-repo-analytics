@@ -27,10 +27,5 @@ metrics:
     time_grains: [ day, week, month ]
     dimensions: [ repo ]
 
-    filters:
-      - field: author
-        operator: '!='
-        value: "'github-actions[bot]'"
-
     tags:
       - piperider
