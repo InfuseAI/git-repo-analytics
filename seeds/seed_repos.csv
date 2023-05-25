@@ -1,0 +1,4 @@
+name,repo
+dbt-core,dbt-labs/dbt-core
+duckdb,duckdb/duckdb
+PipeRider,InfuseAI/piperider

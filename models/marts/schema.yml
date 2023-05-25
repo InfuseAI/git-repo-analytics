@@ -4,6 +4,6 @@ models:
   - name: authors
     description: "git commit authors"
     columns:
-      - name: name
+      - name: author_name
         tests:
           - not_null

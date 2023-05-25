@@ -6,7 +6,7 @@ with C as (
 
 select distinct
     repo as repo,
-    author as name,
+    author as author_name,
     email as email,
     substr(email, instr(email, '@') + 1) as domain
 from C

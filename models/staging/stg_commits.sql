@@ -23,4 +23,4 @@ renamed as (
 
 )
 
-select * from renamed
+select * from renamed where repo = 'duckdb/duckdb'
