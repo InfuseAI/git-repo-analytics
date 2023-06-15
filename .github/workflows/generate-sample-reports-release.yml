@@ -53,7 +53,7 @@ jobs:
 
       - name: override piperider user id
         run: |
-          piperider version && rm .piperider/.unsend_events.json
+          piperider version && rm ~/.piperider/.unsend_events.json
           uuid=$(uuidgen -n @oid -N "${GITHUB_REPOSITORY}" --sha1 | tr -d "-")
           sed -i "s/^user_id: .*$/user_id: ${uuid}/" ~/.piperider/profile.yml
 
