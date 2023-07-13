@@ -51,7 +51,7 @@ jobs:
         run: |
           dbt deps
           dbt build
-          piperider run --dbt-state target/ -o /tmp/piperider-base
+          piperider run --dbt-target-path target/ -o /tmp/piperider-base
 
       - name: checkout pr branch
         run: |
@@ -62,7 +62,7 @@ jobs:
         run: |
           dbt deps
           dbt build
-          piperider run --dbt-state target/ -o /tmp/piperider-target
+          piperider run --dbt-target-path target/ -o /tmp/piperider-target
 
       - name: compare reports
         run: |
