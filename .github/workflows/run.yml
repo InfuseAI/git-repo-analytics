@@ -30,46 +30,10 @@ jobs:
         run: |
           make load
 
-      - name: Run dbt + PipeRider for main branch
+      - name: prepare target/manifest.json (workaround)
         run: |
-          git fetch
-          git checkout main
           dbt deps
-          dbt run
-          piperider run --dbt-state target/
+          dbt compile
 
-      - name: Run dbt + PipeRider for current pull request
-        run: |
-          git fetch
-          git checkout $GITHUB_HEAD_REF
-          dbt deps
-          dbt run
-          piperider run --dbt-state target/
-
-      - name: Generate Comparison reports + Summary
-        run: |
-          piperider compare-reports --last
-          pushd .piperider/comparisons/latest
-          zip -r comparison-report.zip ./
-          popd
-          cp .piperider/comparisons/latest/summary.md comparison-report-summary.md
-          cp .piperider/comparisons/latest/comparison-report.zip .
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: comparison-report-artifact
-          path: comparison-report.zip
-
-      - name: Prepare Comparison Summary
-        run: |
-          echo "# :bar_chart: Piperider Comparison Summary" > summary.md
-          cat comparison-report-summary.md >> summary.md
-          echo -e "\n" >> summary.md
-          echo "## :paperclip: Generated Comparison Report ZIP" >> summary.md
-          echo "Find it in the [Github Action Runs Page](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> summary.md
-
-      - name: Create PR Comment
-        uses: peter-evans/create-or-update-comment@v2.1.0
-        with:
-          issue-number: ${{ github.event.number }}
-          body-file: summary.md
+      - name: PipeRider Compare
+        uses: InfuseAI/piperider-compare-action@v1
