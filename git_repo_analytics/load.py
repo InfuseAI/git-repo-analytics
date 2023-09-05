@@ -69,23 +69,6 @@ def load_repos(conn):
         conn.executemany("INSERT INTO raw_commits VALUES(?, ?, ?, ?, ?, ?, ?)", map(commit, commits))
 
 
-def load_github(conn):
-    print("Loading github data...")
-
-    conn.execute(
-        '''
-        create table raw_repos as
-        select * from 'data/gh/*/repo.csv';
-        '''
-    )
-    conn.execute(
-        '''
-        create table raw_contributers as
-        select * from 'data/gh/*/contributers.csv';
-        '''
-    )
-
-
 if __name__ == '__main__':
     fname = 'data/git_repo.duckdb'
 
@@ -94,4 +77,3 @@ if __name__ == '__main__':
 
     with duckdb.connect(database=fname) as conn:
         load_repos(conn)
-        load_github(conn)
