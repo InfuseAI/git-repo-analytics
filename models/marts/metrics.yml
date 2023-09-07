@@ -1,31 +1,45 @@
 version: 2
 
+semantic_models:
+  - name: commits
+    model: ref('stg_commits')
+    description: commit information from git repo's raw commit
+    defaults:
+      agg_time_dimension: datetime
+
+    entities:
+      - name: repo
+        type: primary
+
+    dimensions:
+      - name: datetime
+        type: time
+        type_params:
+          time_granularity: day
+
+    measures:
+      - name: total_commits
+        description: "The total number of commits in the repo"
+        agg: count_distinct
+        expr: hash
+
+      - name: active_authors
+        description: "The total number of active authors in the repo"
+        agg: count_distinct
+        expr: author
+
 metrics:
 
   - name: total_commits
+    description: "The total number of commits in the repo"
+    type: simple
     label: Total commits
-    model: ref('stg_commits')
-
-    calculation_method: count_distinct
-    expression: hash
-
-    timestamp: datetime
-    time_grains: [ day, week, month, quarter, year, all_time ]
-    dimensions: [ repo ]
-
-    tags:
-      - piperider
+    type_params:
+        measure: total_commits
 
   - name: active_authors
+    description: "The total number of active authors in the repo"
+    type: simple
     label: Active authors
-    model: ref('stg_commits')
-
-    calculation_method: count_distinct
-    expression: author
-
-    timestamp: datetime
-    time_grains: [ day, week, month ]
-    dimensions: [ repo ]
-
-    tags:
-      - piperider
+    type_params:
+        measure: active_authors

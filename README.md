@@ -29,9 +29,7 @@ This is a demo project for [PipeRider](https://github.com/InfuseAI/piperider). I
     make load
     ```
 
-    The file `git_repo.duckdb` is generated
-    
-    > Note: If rate limit exceeded, you can get a higher rate limit with authenticated requests to get a higher rate limit. <br/> You could set the `GITHUB_TOKEN` environment variable with your token value. <br/> `export GITHUB_TOKEN=XXXX`<br/> Check out the [GitHub documentation](https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting) for more details.
+    The file `git_repo.duckdb` is generated under `./data`
 
 1. Run dbt
     ```
@@ -53,5 +51,4 @@ make
 
 # Screenshots
 
-![](assets/screenshot3.png)
-![](assets/screenshot4.png)
+![](assets/screenshot5.png)

@@ -1,8 +1,9 @@
 PyGithub
-dbt-core>=1.5,<1.6
+dbt-core
 dbt-duckdb
 duckdb
 piperider[duckdb]
 GitPython
 pandas
 matplotlib
+dbt-metricflow[duckdb]

@@ -31,9 +31,6 @@ models:
   git_repo_analytics:
     staging:
       +tags: [piperider]
-    intermediate:    
-      +materialized: table
-      +tags: [piperider]
     marts:
       +materialized: table
       +tags: [piperider]
