@@ -1,4 +1,4 @@
-all: fetch load transform piperider
+all: fetch load transform report piperider
 
 clone_repos:
 	@python -m git_repo_analytics.clone_repos
