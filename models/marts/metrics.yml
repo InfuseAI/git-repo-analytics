@@ -43,3 +43,5 @@ metrics:
     label: Active authors
     type_params:
         measure: active_authors
+    filter: |
+      {{ Dimension('repo__author') }} != 'github-actions[bot]'
